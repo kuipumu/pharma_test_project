@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+{% block main %}
+{{ form.media }}
+<h1 class="fw-bold fs-4 border-bottom border-2 border-dark">
+    {% translate 'Add Sample' %}
+</h1>
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} my-2" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+{% endif %}
+{% if form.non_field_errors %}
+    <div class="alert alert-danger my-2" role="alert">
+        {% for error in form.non_field_errors %}
+            <div>{{ error }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+<form action="{{ action }}" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="mb-2">
+        {% if field.errors  %}
+            {{ field }}
+            <ul class="alert alert-danger my-2" role="alert">
+                {{ field.errors }}
+            </ul>
+        {% else %}
+            {{ field }}
+        {% endif %}
+    </div>
+    {% endfor %}
+    <input class="btn btn-primary" type="submit" value="{% translate 'Save' %}">
+    <a href="{% url 'sample_list' %}" class="btn btn-secondary">
+        {% translate 'Return' %}
+    </a>
+</form>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+{% block main %}
+<h1 class="fw-bold fs-4 border-bottom border-dark border-2">
+    {% translate 'All Samples' %}
+</h1>
+{% for obj in object_list %}
+<div id="sample-{{ forloop.counter }}" class="row g-0 text-center mb-2">
+    <div class="col-12 text-start fw-bold fs-5">
+        {{ obj.properties.CurrentMedications.0.TheraputicArea.0 }}
+        <div class="d-flex align-items-center float-end mb-2">
+            <a class="btn btn-sm btn-primary me-2" href="{% url 'sample_update' pk=obj.id %}">
+                {% translate 'Edit' %}
+            </a>
+            <a class="btn btn-sm btn-danger" href="{% url 'sample_delete' pk=obj.id %}">
+                {% translate 'Delete' %}
+            </a>
+        </div>
+    </div>
+    <div id="sample-{{ forloop.counter }}-col-1" class="col-12 col-lg-2 border-top border-bottom border-dark border-2 bg-dark-cell data-col-1" style="min-height: 100px;">
+        <span class="fw-bold">
+            {{ obj.properties.CurrentMedications.0.Drugs.0.Generic.0 }}
+        </span>
+        <br>
+        ({{ obj.properties.CurrentMedications.0.Drugs.0.Trade.0 }})
+    </div>
+    <div id="sample-{{ forloop.counter }}-col-2" class="col-12 col-lg-5 border-top border-bottom border-dark border-2" style="display: none;">
+        <div class="row g-0">
+            <div class="col-3 fw-bold border-end border-bottom border-dark">
+                {% translate 'Gene' %}
+            </div>
+            <div class="col-3 fw-bold border-end border-bottom border-dark">
+                {% translate 'Genotype' %}
+            </div>
+            <div class="col-6 bg-dark-cell fw-bold border-start border-bottom border-dark">
+                {% translate 'Phenotypes/Patient Impact' %}
+            </div>
+        </div>
+        {% for obj in obj.properties.CurrentMedications.0.GeneInfo %}
+        <div class="row g-0">
+            <div class="col-3 fw-bold border-end border-bottom border-dark">
+                {{ obj.Gene }}
+            </div>
+            <div class="col-3 fw-bold border-end border-bottom border-dark">
+                {{ obj.Genotype }}
+            </div>
+            <div class="col-6 bg-dark-cell border-start border-bottom border-dark">
+                {{ obj.Phenotype }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row g-0">
+            <div class="col-6 bg-darker-cell fw-bold border-top border-end border-dark">
+                {{ obj.properties.CurrentMedications.0.Action.0 }}
+            </div>
+            <div class="col-6 bg-darker-cell fw-bold border-start border-dark">
+                {{ obj.properties.CurrentMedications.0.GroupPhenotype }}
+            </div>
+        </div>
+    </div>
+    <div id="sample-{{ forloop.counter }}-col-3" class="col-12 col-lg-5 border-top border-bottom border-dark border-2" style="display: none;">
+        {{ obj.properties.CurrentMedications.0.Recommendation }}
+    </div>
+</div>
+<style>
+{% if obj.properties.CurrentMedications.0.Action.0 == 'GO' and obj.properties.CurrentMedications.0.GroupPhenotype == 'Normal Response' %}
+    #sample-{{ forloop.counter }} .bg-dark-cell {
+        background-color: var(--bs-teal);
+        color: var(--bs-dark);
+    }
+    #sample-{{ forloop.counter }} .bg-darker-cell {
+        background-color: var(--bs-green);
+        color: var(--bs-white);
+    }
+    #sample-{{ forloop.counter }} #sample-{{ forloop.counter }}-col-1 {
+        cursor: pointer;
+    }
+    #sample-{{ forloop.counter }} #sample-{{ forloop.counter }}-col-1:hover {
+        background-color: var(--bs-green);
+        color: var(--bs-white);
+    }
+{% else %}
+    #sample-{{ forloop.counter }} .bg-dark-cell {
+        background-color: var(--bs-yellow);
+        color: var(--bs-dark);
+    }
+    #sample-{{ forloop.counter }} .bg-darker-cell {
+        background-color: var(--bs-orange);
+        color: var(--bs-white);
+    }
+    #sample-{{ forloop.counter }} #sample-{{ forloop.counter }}-col-1 {
+        cursor: pointer;
+    }
+    #sample-{{ forloop.counter }} #sample-{{ forloop.counter }}-col-1:hover {
+        background-color: var(--bs-orange);
+        color: var(--bs-white);
+    }
+{% endif %}
+</style>
+<script>
+// Toggle sample information.
+document.addEventListener("DOMContentLoaded", function(event) {
+    $( "#sample-{{ forloop.counter }}-col-1" ).click(function() {
+      $( "#sample-{{ forloop.counter }}-col-2" ).toggle();
+      $( "#sample-{{ forloop.counter }}-col-3" ).toggle();
+    });
+});
+</script>
+{% empty %}
+    <div class="mb-2">
+        {% translate 'No samples yet, please click on "Add" and add a new one,' %}
+    </div>
+{% endfor %}
+<div class="d-flex align-items-center justify-content-between">
+    <a href="{% url 'sample_create' %}" class="btn btn-primary">
+        {% translate 'Add' %}
+    </a>
+</div>
+{% endblock %}

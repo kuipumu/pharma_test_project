@@ -1,0 +1,14 @@
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
+
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}">
+  {% include "head.html" %}
+  <body>
+    <main class="container-fluid my-4">
+    {% block main %}
+    {% endblock %}
+    </main>
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>

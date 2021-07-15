@@ -1,0 +1,12 @@
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    {% if title %}
+      <title>{{title}}</title>
+    {% endif %}
+    {% block title %}
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>

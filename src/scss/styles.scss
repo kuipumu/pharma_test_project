@@ -1,0 +1,9 @@
+@import "bootstrap/scss/bootstrap";
+
+.bg-light-warning {
+	background-color: lighten($warning, 40%);
+}
+
+.bg-light-success {
+	background-color: lighten($success, 40%);
+}
