@@ -2,6 +2,10 @@
 
 Sample test project to upload fake JSON data to a SQlite database to display a list of fake pharmaceutical samples information. Built with Django, Jsonschema, Webpack, jQuery and Bootstrap.
 
+# Screenshot
+
+![Screenshot](screenshot.png)
+
 # Getting Started
 
 First clone the repository from Github and switch to the new directory:
